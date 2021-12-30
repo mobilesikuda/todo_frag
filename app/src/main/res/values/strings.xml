@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">todo_frag</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="list_fragment_label">List notes</string>
+    <string name="add_fragment_label">Add note</string>
+    <string name="update_fragment_label">Update note</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_list_fragment">Hello list fragment</string>
+    <string name="hello_add_fragment">Hello add fragment. Arg: %1$s</string>
+    <string name="hello_update_fragment">Hello update fragment. Arg: %1$s</string>
+</resources>

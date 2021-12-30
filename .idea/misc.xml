@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/drawable/ic_add.xml" value="0.3828125" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/drawable/ic_delete.xml" value="0.3828125" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/drawable/ic_empty.xml" value="0.3828125" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/activity_add.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/activity_update.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/fragment_add.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/fragment_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/fragment_update.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/layout/my_row.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/s.kudashkin/Documents/AndroidStudioProjects/start/todo_frag/app/src/main/res/menu/my_menu.xml" value="0.36666666666666664" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

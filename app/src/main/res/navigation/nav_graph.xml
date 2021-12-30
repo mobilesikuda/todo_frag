@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ListFragment">
+
+    <fragment
+        android:id="@+id/ListFragment"
+        android:name="ru.sikuda.mobile.todo_foto1.ListFragment"
+        android:label="@string/list_fragment_label">
+
+        <action
+            android:id="@+id/action_ListFragment_to_AddFragment"
+            app:destination="@id/AddFragment" />
+        <action
+            android:id="@+id/action_ListFragment_to_UpdateFragment"
+            app:destination="@id/UpdateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/AddFragment"
+        android:name="ru.sikuda.mobile.todo_foto1.AddFragment"
+        android:label="@string/add_fragment_label"
+        tools:layout="@layout/fragment_add">
+
+        <action
+            android:id="@+id/action_AddFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UpdateFragment"
+        android:name="ru.sikuda.mobile.todo_foto1.UpdateFragment"
+        android:label="@string/update_fragment_label"
+        tools:layout="@layout/fragment_update">
+
+        <action
+            android:id="@+id/action_UpdateFragment_to_ListFragment"
+            app:destination="@id/ListFragment" />
+    </fragment>
+</navigation>
