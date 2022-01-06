@@ -7,8 +7,9 @@
 
     <fragment
         android:id="@+id/ListFragment"
-        android:name="ru.sikuda.mobile.todo_foto1.ListFragment"
-        android:label="@string/list_fragment_label">
+        android:name="ru.sikuda.mobile.todo_frag.ListFragment"
+        android:label="@string/list_fragment_label"
+        tools:layout="@layout/fragment_list">
 
         <action
             android:id="@+id/action_ListFragment_to_AddFragment"
@@ -19,23 +20,13 @@
     </fragment>
     <fragment
         android:id="@+id/AddFragment"
-        android:name="ru.sikuda.mobile.todo_foto1.AddFragment"
+        android:name="ru.sikuda.mobile.todo_frag.AddFragment"
         android:label="@string/add_fragment_label"
-        tools:layout="@layout/fragment_add">
-
-        <action
-            android:id="@+id/action_AddFragment_to_ListFragment"
-            app:destination="@id/ListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_add"/>
 
     <fragment
         android:id="@+id/UpdateFragment"
-        android:name="ru.sikuda.mobile.todo_foto1.UpdateFragment"
+        android:name="ru.sikuda.mobile.todo_frag.UpdateFragment"
         android:label="@string/update_fragment_label"
-        tools:layout="@layout/fragment_update">
-
-        <action
-            android:id="@+id/action_UpdateFragment_to_ListFragment"
-            app:destination="@id/ListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_update"/>
 </navigation>
