@@ -1,22 +1,29 @@
 package ru.sikuda.mobile.todo_frag
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.sikuda.mobile.todo_frag.databinding.FragmentUpdateBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.Note
 import ru.sikuda.mobile.todo_frag.model.NoteDatabaseHelper
+import java.time.LocalDate
+import java.util.*
 
 
 class UpdateFragment : Fragment() {
 
     private var _binding: FragmentUpdateBinding? = null
-    private val viewModel: MainModel by viewModels()
+    private val model: MainModel by activityViewModels()
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -45,6 +52,27 @@ class UpdateFragment : Fragment() {
         binding.contextInput2.setText(note.content)
         binding.detailInput2.setText(note.details)
 
+        val date = LocalDate.parse(note.date)
+        //val cal = Calendar.getInstance()
+        //cal.set(date.year, date.monthValue, date.dayOfMonth)
+
+        //val sdf = SimpleDateFormat("yyyy.MM.dd", Locale("ru", "RU"))
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            //date(year,)
+            //cal.set(Calendar.YEAR, year)
+            //cal.set(Calendar.MONTH, monthOfYear)
+            //cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            binding.dateInput2.setText(year.toString()+"-"+monthOfYear.toString()+"-"+dayOfMonth.toString())
+        }
+
+        binding.dateInput2.setOnClickListener {
+            DatePickerDialog( this.requireContext(), dateSetListener,
+                date.year, //cal.get(Calendar.YEAR),
+                date.monthValue, //cal.get(Calendar.MONTH),
+                date.year //cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
 
         binding.updateButton.setOnClickListener {
 
@@ -52,13 +80,12 @@ class UpdateFragment : Fragment() {
             val content = binding.contextInput2.text.toString()
             val detail = binding.detailInput2.text.toString()
 
-            //viewModel.updateNote(note)
-            NoteDatabaseHelper(this.context).updateNote( note.id.toString(), date, content, detail)
+            model.updateNote(note.id.toString(), date, content, detail)
             findNavController().popBackStack();
         }
 
         binding.deleteButton.setOnClickListener {
-            NoteDatabaseHelper(this.context).deleteNote(note.id.toString())
+            model.deleteNote(note.id.toString())
             findNavController().popBackStack()
         }
     }

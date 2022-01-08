@@ -10,11 +10,14 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.sikuda.mobile.todo_frag.databinding.FragmentListBinding
+import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.Note
 import ru.sikuda.mobile.todo_frag.model.NoteDatabaseHelper
 import java.time.LocalDateTime
@@ -25,12 +28,19 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
-    private val notes: ArrayList<Note> = ArrayList<Note>()
+    private var notes: ArrayList<Note> = ArrayList<Note>()
+    private val model: MainModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        model.list.observe(viewLifecycleOwner, {
+            // Update the UI
+            //notes = it as ArrayList<Note>
+            showNoData()
+        })
 
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,7 +50,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            getArrayList()
+            notes = model.getAllNotes()
             binding.recyclerView.adapter = CustomAdapter(this.context, notes)
             binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
 
@@ -49,20 +59,12 @@ class ListFragment : Fragment() {
         }
     }
 
-    fun getArrayList() {
-        val myDB = NoteDatabaseHelper(this.context)
-        val cursor = myDB.readAllData()
-        if (cursor?.count == 0) {
+    fun showNoData() {
+
+        if (notes.count() == 0) {
             binding.emptyImageview.visibility = View.VISIBLE
             binding.noData.visibility = View.VISIBLE
         } else {
-            notes.clear()
-            while (cursor!!.moveToNext()) {
-
-                val date = cursor.getString(1)
-                val note: Note = Note(cursor.getLong(0), date, cursor.getString(2), cursor.getString(3))
-                notes.add(note)
-            }
             binding.emptyImageview.visibility = View.GONE
             binding.noData.visibility = View.GONE
         }
@@ -75,7 +77,6 @@ class ListFragment : Fragment() {
 }
 
 class CustomAdapter(
-    //val activity: Activity,
     private val context: Context?,
     private val books: ArrayList<Note>
 ) : RecyclerView.Adapter<CustomAdapter.MyNoteHolder>() {
@@ -86,13 +87,11 @@ class CustomAdapter(
         return MyNoteHolder(view)
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: MyNoteHolder, position: Int) {
         holder.noteid.text = books[position].id.toString()
         holder.note_date.text = books[position].date.toString()
         holder.note_content.text = books[position].content.toString()
         holder.note_details.text = books[position].details.toString()
-
 
         //Animation RecycleView
         holder.mainLayout.animation = AnimationUtils.loadAnimation(
@@ -106,7 +105,6 @@ class CustomAdapter(
             val date = holder.note_date.text.toString()
             val content = holder.note_content.text.toString()
             val details = holder.note_details.text.toString()
-            //val note = Note(id, date, content, details)
 
             val bundle = bundleOf("id" to id, "date_txt" to date, "content" to content, "details" to details)
             it.findNavController().navigate(R.id.action_ListFragment_to_UpdateFragment, bundle)

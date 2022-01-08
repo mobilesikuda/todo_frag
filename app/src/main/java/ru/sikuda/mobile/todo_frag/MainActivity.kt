@@ -10,16 +10,22 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import ru.sikuda.mobile.todo_frag.databinding.ActivityMainBinding
+import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.NoteDatabaseHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
- 
+    private val model: MainModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,10 +35,16 @@ class MainActivity : AppCompatActivity() {
         val navigationHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         val navController = navigationHost.navController
-        //val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -42,9 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         if (item.itemId == R.id.delete_all) {
             confirmDialog()
         }
@@ -58,12 +68,14 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton(
             "Yes"
         ) { _, _ ->
-            val myDB = NoteDatabaseHelper(this@MainActivity)
-            myDB.deleteAllData()
-            //Refresh Activity
-            val intent = Intent(this@MainActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            model.deleteAllNotes()
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+            if(navController.currentDestination?.id == R.id.ListFragment)
+                navController.navigate(R.id.action_ListFragment_to_ListFragment)
+            else
+                navController.navigateUp(appBarConfiguration)
+                    || super.onSupportNavigateUp()
         }
         builder.setNegativeButton(
             "No"
@@ -71,9 +83,4 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
 }
