@@ -9,15 +9,25 @@
 
     <EditText
         android:id="@+id/date_input2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:ems="20"
         android:hint="Book Title"
-        android:inputType="datetime"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="date"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@id/date_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/date_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set date"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/date_input2"/>
 
     <EditText
         android:id="@+id/context_input2"
@@ -27,6 +37,7 @@
         android:ems="10"
         android:hint="Book Author"
         android:inputType="textShortMessage"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_input2" />
@@ -39,6 +50,7 @@
         android:ems="10"
         android:hint="Number of pages"
         android:inputType="textMultiLine"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/context_input2" />
