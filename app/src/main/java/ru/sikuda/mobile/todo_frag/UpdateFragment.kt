@@ -16,11 +16,12 @@ import java.time.format.DateTimeFormatter
 
 class UpdateFragment : Fragment() {
 
-    private var _binding: FragmentUpdateBinding? = null
+    private lateinit var binding: FragmentUpdateBinding
     private val model: MainModel by activityViewModels()
     private lateinit var note: Note
+    private var index: Int = 0
     // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
+    //private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -28,13 +29,14 @@ class UpdateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        index = arguments?.getInt("index") as Int
         val id = arguments?.getLong("id") as Long
         val date = arguments?.getString("date_txt") as String
         val content = arguments?.getString("content") as String
         val details = arguments?.getString("details") as String
         note = Note(id,date, content, details)
 
-        _binding = FragmentUpdateBinding.inflate(layoutInflater)
+        binding = FragmentUpdateBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -48,14 +50,14 @@ class UpdateFragment : Fragment() {
         var date = LocalDate.parse(note.date)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            LocalDate.of(year,monthOfYear, dayOfMonth).also { date = it }
+            LocalDate.of(year,monthOfYear+1, dayOfMonth).also { date = it }
             binding.dateInput2.setText(date.format(formatter))
         }
 
         binding.dateButton.setOnClickListener {
             DatePickerDialog( this.requireContext(), dateSetListener,
                 date.year, //cal.get(Calendar.YEAR),
-                date.monthValue, //cal.get(Calendar.MONTH),
+                date.monthValue-1, //cal.get(Calendar.MONTH),
                 date.dayOfMonth //cal.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
@@ -67,18 +69,18 @@ class UpdateFragment : Fragment() {
             val content = binding.contextInput2.text.toString()
             val detail = binding.detailInput2.text.toString()
 
-            model.updateNote(note.id.toString(), dating, content, detail)
+            model.updateNote(index, note.id.toString(), dating, content, detail)
             findNavController().popBackStack()
         }
 
         binding.deleteButton.setOnClickListener {
-            model.deleteNote(note.id.toString())
+            model.deleteNote(index, note.id)
             findNavController().popBackStack()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

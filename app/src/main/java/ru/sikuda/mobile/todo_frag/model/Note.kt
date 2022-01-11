@@ -1,7 +1,5 @@
 package ru.sikuda.mobile.todo_frag.model
 
-import java.time.LocalDateTime
-
 data class Note(
     val id: Long,
     val date: String,

@@ -1,8 +1,6 @@
 package ru.sikuda.mobile.todo_frag
 
-import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,13 +10,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.viewModels
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import ru.sikuda.mobile.todo_frag.databinding.ActivityMainBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
-import ru.sikuda.mobile.todo_frag.model.NoteDatabaseHelper
+
 
 class MainActivity : AppCompatActivity() {
 

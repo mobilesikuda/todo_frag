@@ -15,52 +15,65 @@ class MainModel() : ViewModel() {
         get() = _list
     private val myDB = NoteDatabaseHelper(NotesApp.appContext)
 
-    fun getAllNotes(): ArrayList<Note>{
- //       viewModelScope.launch {
-
-            var notes: ArrayList<Note> = ArrayList<Note>()
-            val cursor = myDB.readAllData()
-            if (cursor?.count == 0) {
-                //binding.emptyImageview.visibility = View.VISIBLE
-                //binding.noData.visibility = View.VISIBLE
-            } else {
-                notes.clear()
-                while (cursor!!.moveToNext()) {
-
-                    val date = cursor.getString(1)
-                    val note: Note = Note(cursor.getLong(0), date, cursor.getString(2), cursor.getString(3))
-                    notes.add(note)
-                }
-            }
-            _list.value = notes
-            return notes
- //       }
+    init {
+        _list.value = ArrayList<Note>()
+        getAllNotes()
     }
 
-    fun updateNote(id: String, date: String, content: String, detail: String){
+    fun getNote(id: Int): Note {
+        return _list.value?.get(id)!!
+    }
+
+    fun size(): Int{
+        return _list.value!!.size
+    }
+
+    //ArrayList<Note>
+    fun getAllNotes() {
+        viewModelScope.launch {
+
+            val notes: ArrayList<Note> = ArrayList<Note>()
+            val cursor = myDB.readAllData()
+            notes.clear()
+            while (cursor!!.moveToNext()) {
+
+                val date = cursor.getString(1)
+                val note: Note = Note(cursor.getLong(0), date, cursor.getString(2), cursor.getString(3))
+                notes.add(note)
+            }
+            _list.value = notes
+            return@launch
+        }
+    }
+
+    fun updateNote(index: Int, id: String, date: String, content: String, detail: String){
+
+        _list.value?.set(index, Note(id.toLong(), date, content, detail))
         viewModelScope.launch {
             myDB.updateNote( id, date, content, detail)
-            //getAllNotes()
         }
     }
 
     fun insertNote(date: String, content: String, detail: String){
+
         viewModelScope.launch {
             myDB.addNote(date, content, detail)
-            //getAllNotes()
+            getAllNotes()
         }
     }
 
-    fun deleteNote(id: String){
+    fun deleteNote(index: Int, id: Long){
+
+        _list.value?.removeAt(index)
         viewModelScope.launch {
-            myDB.deleteNote(id)
+            myDB.deleteNote(id.toString())
             //getAllNotes()
         }
     }
 
     fun deleteAllNotes(){
         myDB.deleteAllData()
-        _list.value = ArrayList<Note>()
+        _list.value?.clear()
     }
 
 }
