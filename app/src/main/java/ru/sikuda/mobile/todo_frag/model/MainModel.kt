@@ -55,7 +55,6 @@ class MainModel() : ViewModel() {
     }
 
     fun insertNote(date: String, content: String, detail: String){
-
         viewModelScope.launch {
             myDB.addNote(date, content, detail)
             getAllNotes()
@@ -72,8 +71,10 @@ class MainModel() : ViewModel() {
     }
 
     fun deleteAllNotes(){
-        myDB.deleteAllData()
         _list.value?.clear()
+        viewModelScope.launch {
+            myDB.deleteAllData()
+        }
     }
 
 }

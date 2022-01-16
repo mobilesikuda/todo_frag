@@ -10,7 +10,6 @@ import android.widget.Toast
 class NoteDatabaseHelper(private val context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
-        deleteAllData()
         val query = "CREATE TABLE " + TABLE_NAME +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_DATE + " TEXT, " +
