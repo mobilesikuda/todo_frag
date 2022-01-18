@@ -11,4 +11,8 @@
     <string name="hello_list_fragment">Hello list fragment</string>
     <string name="hello_add_fragment">Hello add fragment. Arg: %1$s</string>
     <string name="hello_update_fragment">Hello update fragment. Arg: %1$s</string>
+    <string name="denied_toast">Permission Denined</string>
+    <string name="make_foto">Make foto</string>
+    <string name="need_permission">Need Permision</string>
+    <string name="something_wrong">Something wrong</string>
 </resources>

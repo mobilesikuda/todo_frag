@@ -14,7 +14,8 @@ class NoteDatabaseHelper(private val context: Context?) :
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_DATE + " TEXT, " +
                 COLUMN_CONTENT + " TEXT, " +
-                COLUMN_DETAIL + " TEXT);"
+                COLUMN_DETAIL + " TEXT," +
+                COLUMN_IMAGE + " TEXT);"
         db.execSQL(query)
     }
 
@@ -23,12 +24,13 @@ class NoteDatabaseHelper(private val context: Context?) :
         onCreate(db)
     }
 
-    fun addNote(date: String?, content: String?, detail: String?) {
+    fun addNote(date: String?, content: String?, detail: String?, imagefile: String?) {
         val db = this.writableDatabase
         val cv = ContentValues()
         cv.put(COLUMN_DATE, date)
         cv.put(COLUMN_CONTENT, content)
         cv.put(COLUMN_DETAIL, detail)
+        cv.put(COLUMN_IMAGE, imagefile)
         val result = db.insert(TABLE_NAME, null, cv)
         if (result == -1L) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
@@ -47,12 +49,13 @@ class NoteDatabaseHelper(private val context: Context?) :
         return cursor
     }
 
-    fun updateNote(row_id: String, date: String?, content: String?, detail: String?) {
+    fun updateNote(row_id: String, date: String?, content: String?, detail: String?, imagefile: String?) {
         val db = this.writableDatabase
         val cv = ContentValues()
         cv.put(COLUMN_DATE, date)
         cv.put(COLUMN_CONTENT, content)
         cv.put(COLUMN_DETAIL, detail)
+        cv.put(COLUMN_IMAGE, detail)
         val result = db.updateWithOnConflict(TABLE_NAME, cv, "id=?", arrayOf(row_id),
             SQLiteDatabase.CONFLICT_REPLACE).toLong()
         if (result == -1L) {
@@ -78,12 +81,13 @@ class NoteDatabaseHelper(private val context: Context?) :
     }
 
     companion object {
-        private const val DATABASE_NAME = "database.db"
+        private const val DATABASE_NAME = "databasenote.db"
         private const val DATABASE_VERSION = 1
         private const val TABLE_NAME = "notes"
         private const val COLUMN_ID = "id"
         private const val COLUMN_DATE = "date"
         private const val COLUMN_CONTENT = "content"
         private const val COLUMN_DETAIL = "detail"
+        private const val COLUMN_IMAGE = "fileimage"
     }
 }

@@ -1,6 +1,7 @@
 package ru.sikuda.mobile.todo_frag
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,9 +21,6 @@ class UpdateFragment : Fragment() {
     private val model: MainModel by activityViewModels()
     private lateinit var note: Note
     private var index: Int = 0
-    // This property is only valid between onCreateView and onDestroyView.
-    //private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +32,8 @@ class UpdateFragment : Fragment() {
         val date = arguments?.getString("date_txt") as String
         val content = arguments?.getString("content") as String
         val details = arguments?.getString("details") as String
-        note = Note(id,date, content, details)
+        val fileimage = arguments?.getString("fileimage") as String
+        note = Note(id,date, content, details, fileimage)
 
         binding = FragmentUpdateBinding.inflate(layoutInflater)
         return binding.root
@@ -69,7 +68,7 @@ class UpdateFragment : Fragment() {
             val content = binding.contextInput2.text.toString()
             val detail = binding.detailInput2.text.toString()
 
-            model.updateNote(index, note.id.toString(), dating, content, detail)
+            model.updateNote(index, note.id.toString(), dating, content, detail, note.fileimage)
             findNavController().popBackStack()
         }
 

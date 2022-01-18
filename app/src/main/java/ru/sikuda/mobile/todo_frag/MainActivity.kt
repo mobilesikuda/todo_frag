@@ -1,5 +1,7 @@
 package ru.sikuda.mobile.todo_frag
 
+import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,11 +10,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import ru.sikuda.mobile.todo_frag.databinding.ActivityMainBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -76,6 +83,47 @@ class MainActivity : AppCompatActivity() {
             "No"
         ) { _, _ -> }
         builder.create().show()
+    }
+
+    //Permission for foto
+    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        when {
+            granted -> {
+//                lifecycleScope.launchWhenStarted {
+//                    getTmpFileUri().let { uri ->
+//                        latestTmpUri = uri
+//                        takeImageResult.launch(uri)
+//                    }
+//                }
+                // user granted permission
+                //cameraShot.launch(null)
+            }
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+                // user denied permission and set Don't ask again.
+                showSettingsDialog()
+            }
+            else -> {
+                showToast(R.string.denied_toast)
+            }
+        }
+    }
+
+    private fun showSettingsDialog() {
+        //DontAskAgainFragment().show(parentFragmentManager, DontAskAgainFragment.TAG)
+        showToast(R.string.denied_toast)
+    }
+
+    private fun showToast(textId: Int) {
+        Toast.makeText(this, textId, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getTmpFileUri(): Uri {
+        val tmpFile = File.createTempFile("tmp_image_file", ".png", cacheDir).apply {
+            createNewFile()
+            deleteOnExit()
+        }
+
+        return FileProvider.getUriForFile(applicationContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
     }
 
 }

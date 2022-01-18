@@ -92,7 +92,7 @@ class CustomAdapter(
         holder.noteid.text = (position+1).toString() //note.id.toString()
         holder.note_date.text = note.date.toString()
         holder.note_content.text = note.content.toString()
-        holder.note_details.text = note.details.toString()
+        //holder.note_details.text = note.details.toString()
 
         //Animation RecycleView
         holder.mainLayout.animation = AnimationUtils.loadAnimation(
@@ -105,9 +105,9 @@ class CustomAdapter(
             //val id = holder.noteid.text.toString().toLong()
             val date = holder.note_date.text.toString()
             val content = holder.note_content.text.toString()
-            val details = holder.note_details.text.toString()
+            //val details = holder.note_details.text.toString()
 
-            val bundle = bundleOf("index" to holder.adapterPosition, "id" to holder.id, "date_txt" to date, "content" to content, "details" to details)
+            val bundle = bundleOf("index" to holder.adapterPosition, "id" to holder.id, "date_txt" to date, "content" to content)
             it.findNavController().navigate(R.id.action_ListFragment_to_UpdateFragment, bundle)
 
         }
@@ -125,7 +125,7 @@ class CustomAdapter(
         var noteid: TextView = itemView.findViewById(R.id.note_id)
         var note_date: TextView = itemView.findViewById(R.id.note_date)
         var note_content: TextView = itemView.findViewById(R.id.note_content)
-        var note_details: TextView = itemView.findViewById(R.id.note_details)
+        //var note_details: TextView = itemView.findViewById(R.id.note_details)
         var mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)
 
     }

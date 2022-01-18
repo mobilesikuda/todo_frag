@@ -11,7 +11,7 @@
         android:id="@+id/date_input2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-    android:layout_marginTop="150dp"
+
         android:ems="20"
         android:hint="Book Title"
         android:inputType="date"

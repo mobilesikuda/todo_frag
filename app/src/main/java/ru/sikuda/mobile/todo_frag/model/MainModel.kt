@@ -1,5 +1,7 @@
 package ru.sikuda.mobile.todo_frag.model
 
+import android.net.Uri
+import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,8 +39,8 @@ class MainModel() : ViewModel() {
             notes.clear()
             while (cursor!!.moveToNext()) {
 
-                val date = cursor.getString(1)
-                val note: Note = Note(cursor.getLong(0), date, cursor.getString(2), cursor.getString(3))
+                val note: Note = Note( cursor.getLong(0), cursor.getString(1),
+                    cursor.getString(2), cursor.getString(3), cursor.getString(4))
                 notes.add(note)
             }
             _list.value = notes
@@ -46,17 +48,17 @@ class MainModel() : ViewModel() {
         }
     }
 
-    fun updateNote(index: Int, id: String, date: String, content: String, detail: String){
+    fun updateNote(index: Int, id: String, date: String, content: String, detail: String, imagefile: String){
 
-        _list.value?.set(index, Note(id.toLong(), date, content, detail))
+        _list.value?.set(index, Note(id.toLong(), date, content, detail, imagefile))
         viewModelScope.launch {
-            myDB.updateNote( id, date, content, detail)
+            myDB.updateNote( id, date, content, detail, imagefile )
         }
     }
 
-    fun insertNote(date: String, content: String, detail: String){
+    fun insertNote(date: String, content: String, detail: String, imagefile: String){
         viewModelScope.launch {
-            myDB.addNote(date, content, detail)
+            myDB.addNote(date, content, detail, imagefile )
             getAllNotes()
         }
     }
