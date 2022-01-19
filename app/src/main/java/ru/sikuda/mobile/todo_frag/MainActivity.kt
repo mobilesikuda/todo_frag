@@ -85,45 +85,45 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    //Permission for foto
-    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        when {
-            granted -> {
-//                lifecycleScope.launchWhenStarted {
-//                    getTmpFileUri().let { uri ->
-//                        latestTmpUri = uri
-//                        takeImageResult.launch(uri)
-//                    }
-//                }
-                // user granted permission
-                //cameraShot.launch(null)
-            }
-            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                // user denied permission and set Don't ask again.
-                showSettingsDialog()
-            }
-            else -> {
-                showToast(R.string.denied_toast)
-            }
-        }
-    }
-
-    private fun showSettingsDialog() {
-        //DontAskAgainFragment().show(parentFragmentManager, DontAskAgainFragment.TAG)
-        showToast(R.string.denied_toast)
-    }
-
-    private fun showToast(textId: Int) {
-        Toast.makeText(this, textId, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun getTmpFileUri(): Uri {
-        val tmpFile = File.createTempFile("tmp_image_file", ".png", cacheDir).apply {
-            createNewFile()
-            deleteOnExit()
-        }
-
-        return FileProvider.getUriForFile(applicationContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
-    }
+//    //Permission for foto
+//    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+//        when {
+//            granted -> {
+////                lifecycleScope.launchWhenStarted {
+////                    getTmpFileUri().let { uri ->
+////                        latestTmpUri = uri
+////                        takeImageResult.launch(uri)
+////                    }
+////                }
+//                // user granted permission
+//                //cameraShot.launch(null)
+//            }
+//            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+//                // user denied permission and set Don't ask again.
+//                showSettingsDialog()
+//            }
+//            else -> {
+//                showToast(R.string.denied_toast)
+//            }
+//        }
+//    }
+//
+//    private fun showSettingsDialog() {
+//        //DontAskAgainFragment().show(parentFragmentManager, DontAskAgainFragment.TAG)
+//        showToast(R.string.denied_toast)
+//    }
+//
+//    private fun showToast(textId: Int) {
+//        Toast.makeText(this, textId, Toast.LENGTH_SHORT).show()
+//    }
+//
+//    private fun getTmpFileUri(): Uri {
+//        val tmpFile = File.createTempFile("tmp_image_file", ".png", cacheDir).apply {
+//            createNewFile()
+//            deleteOnExit()
+//        }
+//
+//        return FileProvider.getUriForFile(applicationContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
+//    }
 
 }
