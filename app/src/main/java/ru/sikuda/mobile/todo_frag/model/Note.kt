@@ -5,7 +5,8 @@ data class Note(
     val date: String,
     val content: String,
     val details: String,
-    val fileimage: String)
+    val fileimage: String
+    )
 {
         companion object {
             const val UNKNOWN_CREATED_AT = 0L

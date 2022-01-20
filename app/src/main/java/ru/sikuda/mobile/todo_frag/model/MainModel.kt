@@ -1,7 +1,5 @@
 package ru.sikuda.mobile.todo_frag.model
 
-import android.net.Uri
-import androidx.core.net.toFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -68,7 +66,6 @@ class MainModel() : ViewModel() {
         _list.value?.removeAt(index)
         viewModelScope.launch {
             myDB.deleteNote(id.toString())
-            //getAllNotes()
         }
     }
 

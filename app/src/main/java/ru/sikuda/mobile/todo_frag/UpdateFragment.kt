@@ -1,5 +1,6 @@
 package ru.sikuda.mobile.todo_frag
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
@@ -7,13 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import ru.sikuda.mobile.todo_frag.databinding.FragmentUpdateBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.Note
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class UpdateFragment : Fragment() {
 
@@ -21,6 +27,9 @@ class UpdateFragment : Fragment() {
     private val model: MainModel by activityViewModels()
     private lateinit var note: Note
     private var index: Int = 0
+
+    private var latestUri: Uri? = null
+    private var tmpFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,15 +51,30 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dateInput2.setText(note.date)
-        binding.contextInput2.setText(note.content)
-        binding.detailInput2.setText(note.details)
+        binding.dateInput.setText(note.date)
+        binding.contextInput.setText(note.content)
+        binding.detailInput.setText(note.details)
+        if (note.fileimage.isNotBlank()) {
+            Glide.with(this)
+                .load(note.fileimage)
+                .into(binding.imageView)
+        }
+        else binding.imageView.setImageResource(R.drawable.ic_photo)
 
         var date = LocalDate.parse(note.date)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             LocalDate.of(year,monthOfYear+1, dayOfMonth).also { date = it }
-            binding.dateInput2.setText(date.format(formatter))
+            binding.dateInput.setText(date.format(formatter))
+        }
+
+        binding.imageView.setOnClickListener {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                // we need to tell user why do we need permission
+                NotesApp.showToast(R.string.need_permission)
+            } else {
+                cameraPermission.launch(Manifest.permission.CAMERA)
+            }
         }
 
         binding.dateButton.setOnClickListener {
@@ -61,14 +85,22 @@ class UpdateFragment : Fragment() {
             ).show()
         }
 
-
         binding.updateButton.setOnClickListener {
 
-            val dating = binding.dateInput2.text.toString()
-            val content = binding.contextInput2.text.toString()
-            val detail = binding.detailInput2.text.toString()
+            val dating = binding.dateInput.text.toString()
+            val content = binding.contextInput.text.toString()
+            val detail = binding.detailInput.text.toString()
 
-            model.updateNote(index, note.id.toString(), dating, content, detail, note.fileimage)
+            var imagefilepath = note.fileimage;
+            if( tmpFile != null ){
+
+                val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
+                val imagefile = File(filedir,"${UUID.randomUUID()}.jpg")
+                if( tmpFile?.copyTo(imagefile) == imagefile ) {
+                    imagefilepath = imagefile.absolutePath
+                }
+            }
+            model.updateNote(index, note.id.toString(), dating, content, detail, imagefilepath)
             findNavController().popBackStack()
         }
 
@@ -78,8 +110,48 @@ class UpdateFragment : Fragment() {
         }
     }
 
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
+    //take photo
+    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        when {
+            granted -> {
+                getTmpFileUri().let { uri ->
+                    latestUri = uri
+                    takeImageResult.launch(latestUri)
+                }
+            }
+            !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+                // user denied permission and set Don't ask again.
+                showSettingsDialog()
+            }
+            else -> {
+                NotesApp.showToast(R.string.denied_toast)
+            }
+        }
+    }
+
+    private val takeImageResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
+        if (isSuccess) {
+            latestUri?.let { uri ->
+                binding.imageView.setImageURI(uri)
+            }
+        } else {
+            // something was wrong
+            NotesApp.showToast(R.string.something_wrong)
+        }
+    }
+
+    private fun showSettingsDialog() {
+        //DontAskAgainFragment().show(parentFragmentManager, DontAskAgainFragment.TAG)
+        NotesApp.showToast(R.string.denied_toast)
+    }
+
+    private fun getTmpFileUri(): Uri {
+
+        tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
+            createNewFile()
+            deleteOnExit()
+        }
+        return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
+    }
+
 }

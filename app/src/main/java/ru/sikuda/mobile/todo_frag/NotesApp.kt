@@ -21,20 +21,6 @@ class NotesApp: Application() {
         fun showToast(textId: Int) {
             Toast.makeText( appContext, textId, Toast.LENGTH_SHORT).show()
         }
-
-        fun getTmpFileUri(): Uri {
-
-            val tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
-                createNewFile()
-                deleteOnExit()
-            }
-
-            return FileProvider.getUriForFile(appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
-        }
-
-        fun getNewFile() {
-
-        }
     }
 
 }

@@ -7,13 +7,23 @@
     android:padding="30dp">
 
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
     <EditText
-        android:id="@+id/date_input2"
+        android:id="@+id/date_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
     android:layout_marginTop="150dp"
         android:ems="20"
-        android:hint="Book Title"
+        android:hint="date time"
         android:inputType="date"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@id/date_button"
@@ -27,33 +37,34 @@
         android:text="Set date"
         tools:ignore="MissingConstraints"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/date_input2"/>
+        app:layout_constraintTop_toTopOf="@+id/date_input"/>
 
     <EditText
-        android:id="@+id/context_input2"
+        android:id="@+id/context_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Book Author"
+        android:hint="context"
         android:inputType="textShortMessage"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_input2" />
+        app:layout_constraintTop_toBottomOf="@+id/date_input"/>
 
     <EditText
-        android:id="@+id/detail_input2"
+        android:id="@+id/detail_input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Number of pages"
+        android:hint="detail"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/update_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/context_input2" />
+        app:layout_constraintTop_toBottomOf="@+id/context_input" />
 
     <Button
         android:id="@+id/update_button"
@@ -65,7 +76,8 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_input2" />
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/delete_button"/>
 
     <Button
         android:id="@+id/delete_button"
@@ -76,9 +88,9 @@
         android:textAllCaps="false"
         android:textColor="@color/red"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_button" />
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

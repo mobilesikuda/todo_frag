@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -16,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.sikuda.mobile.todo_frag.databinding.FragmentListBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.Note
@@ -90,11 +92,16 @@ class CustomAdapter(
 
         holder.id = note.id
         holder.noteid.text = (position+1).toString() //note.id.toString()
-        holder.note_date.text = note.date.toString()
-        holder.note_content.text = note.content.toString()
-        //holder.note_details.text = note.details.toString()
+        holder.note_date.text = note.date
+        holder.note_content.text = note.content
         holder.fileimage = note.fileimage
         holder.details   = note.details
+        if (note.fileimage.isNotBlank()) {
+            Glide.with(NotesApp.appContext)
+                .load(note.fileimage)
+                .circleCrop()
+                .into(holder.note_imagefile)
+        }
 
         //Animation RecycleView
         holder.mainLayout.animation = AnimationUtils.loadAnimation(
@@ -130,6 +137,7 @@ class CustomAdapter(
         var noteid: TextView = itemView.findViewById(R.id.note_id)
         var note_date: TextView = itemView.findViewById(R.id.note_date)
         var note_content: TextView = itemView.findViewById(R.id.note_content)
+        var note_imagefile: ImageView = itemView.findViewById(R.id.imageView)
 
         //var note_details: TextView = itemView.findViewById(R.id.note_details)
         var mainLayout: LinearLayout = itemView.findViewById(R.id.mainLayout)

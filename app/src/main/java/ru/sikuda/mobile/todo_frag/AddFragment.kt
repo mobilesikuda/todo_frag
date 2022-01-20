@@ -1,34 +1,23 @@
 package ru.sikuda.mobile.todo_frag
 
 import android.Manifest
-import android.content.Context
-import android.content.ContextWrapper
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import ru.sikuda.mobile.todo_frag.databinding.FragmentAddBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
 import java.io.File
-import java.io.IOException
-import java.nio.file.CopyOption
-import java.nio.file.Files
-import java.nio.file.Files.copy
 import java.util.*
-
 
 class AddFragment : Fragment() {
 
@@ -126,30 +115,11 @@ class AddFragment : Fragment() {
 
     private fun getTmpFileUri(): Uri {
 
-//        return NotesApp.getTmpFileUri()
-
         tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
             createNewFile()
             deleteOnExit()
         }
 
         return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
-
-
-//        try {
-//            imagefile?.delete()
-//
-//            val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
-//            imagefile = File(filedir,"${UUID.randomUUID()}.jpg")
-//            if ( imagefile.createNewFile() ) NotesApp.showToast(R.string.hello_add_fragment)
-//
-//        }
-//        catch (e: IOException) {
-//            NotesApp.showToast( R.string.app_name)
-//        }
-//
-//        return imagefile!!.toUri()
-
-        //return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", imagefile!!)
     }
 }

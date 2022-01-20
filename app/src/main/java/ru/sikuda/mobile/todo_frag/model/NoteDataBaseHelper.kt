@@ -55,7 +55,7 @@ class NoteDatabaseHelper(private val context: Context?) :
         cv.put(COLUMN_DATE, date)
         cv.put(COLUMN_CONTENT, content)
         cv.put(COLUMN_DETAIL, detail)
-        cv.put(COLUMN_IMAGE, detail)
+        cv.put(COLUMN_IMAGE, imagefile)
         val result = db.updateWithOnConflict(TABLE_NAME, cv, "id=?", arrayOf(row_id),
             SQLiteDatabase.CONFLICT_REPLACE).toLong()
         if (result == -1L) {
