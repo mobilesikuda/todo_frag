@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="30dp">
 
-
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/ic_photo"
+        android:contentDescription="TODO" />
 
     <EditText
         android:id="@+id/date_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-    android:layout_marginTop="150dp"
         android:ems="20"
-        android:hint="date time"
+        android:hint="@string/date_time"
         android:inputType="date"
         android:minHeight="48dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@id/date_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set date"
-        tools:ignore="MissingConstraints"
+        android:text="@string/set_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/date_input"/>
 
@@ -45,33 +44,33 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="context"
+        android:hint="@string/name_of_task"
         android:inputType="textShortMessage"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_input"/>
+        app:layout_constraintTop_toBottomOf="@+id/date_input"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/detail_input"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
         android:ems="10"
-        android:hint="detail"
+        android:hint="@string/description_of_task"
         android:inputType="textMultiLine"
-        android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/update_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/context_input" />
+        app:layout_constraintTop_toBottomOf="@+id/context_input"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/update_button"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="40dp"
-        android:text="Update"
+        android:text="@string/update"
         android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="16dp"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textAllCaps="false"
         android:textColor="@color/red"
         android:textSize="20sp"

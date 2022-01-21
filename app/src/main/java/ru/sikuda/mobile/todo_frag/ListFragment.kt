@@ -104,9 +104,9 @@ class CustomAdapter(
         }
 
         //Animation RecycleView
-        holder.mainLayout.animation = AnimationUtils.loadAnimation(
-            context, R.anim.translate_anim
-        )
+//        holder.mainLayout.animation = AnimationUtils.loadAnimation(
+//            context, R.anim.translate_anim
+//        )
 
         //Recyclerview onClickListener
         holder.mainLayout.setOnClickListener {

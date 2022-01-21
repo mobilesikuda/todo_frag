@@ -6,44 +6,55 @@
     android:layout_height="match_parent"
     android:padding="30dp">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_photo"
+        android:contentDescription="TODO" />
 
     <EditText
-        android:id="@+id/date_input2"
+        android:id="@+id/date_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:ems="20"
-        android:hint="Book Title"
+        android:hint="@string/date_time"
         android:inputType="date"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@id/date_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set date"
+        android:text="@string/set_date"
         tools:ignore="MissingConstraints"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/date_input2"/>
+        app:layout_constraintTop_toTopOf="@+id/date_input"/>
 
     <EditText
-        android:id="@+id/context_input2"
+        android:id="@+id/context_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Book Author"
+        android:hint=""
         android:inputType="textShortMessage"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_input2" />
+        app:layout_constraintTop_toBottomOf="@+id/date_input"
+        android:autofillHints="" />
 
     <EditText
-        android:id="@+id/detail_input2"
+        android:id="@+id/detail_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -53,7 +64,7 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/context_input2" />
+        app:layout_constraintTop_toBottomOf="@+id/context_input" />
 
     <Button
         android:id="@+id/update_button"
@@ -65,7 +76,7 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_input2" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_input" />
 
     <Button
         android:id="@+id/delete_button"
