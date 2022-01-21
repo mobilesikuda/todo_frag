@@ -91,7 +91,7 @@ class UpdateFragment : Fragment() {
             val content = binding.contextInput.text.toString()
             val detail = binding.detailInput.text.toString()
 
-            var imagefilepath = note.fileimage;
+            var imagefilepath = note.fileimage
             if( tmpFile != null ){
 
                 val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
