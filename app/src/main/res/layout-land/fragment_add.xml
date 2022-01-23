@@ -24,7 +24,7 @@
         android:layout_margin="16dp"
         android:autofillHints="todo"
         android:ems="10"
-        android:hint="Content of task"
+        android:hint="@string/name_of_note"
         android:inputType="textShortMessage"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +46,7 @@
     <Button
         android:id="@+id/add_button"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/add"
         android:textAllCaps="false"
