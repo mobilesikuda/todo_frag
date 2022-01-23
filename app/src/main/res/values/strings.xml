@@ -15,4 +15,13 @@
     <string name="make_foto">Make foto</string>
     <string name="need_permission">Need Permision</string>
     <string name="something_wrong">Something wrong</string>
+    <string name="date_time">Date and Time</string>
+    <string name="set_date">Date</string>
+    <string name="name_of_note">Name of note</string>
+    <string name="description_of_note">description of note</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
+    <string name="foto_for_note">Foto for note</string>
+    <string name="set_time">Time</string>
 </resources>

@@ -44,7 +44,7 @@ class AddFragment : Fragment() {
 
             //val date = LocalDate.now().toString()
             val cal = Calendar.getInstance()
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale("ru", "RU"))
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale("ru", "RU"))
             val date = sdf.format(cal.time)
             val content = binding.contextInput.text.toString()
             val detail = binding.detailInput.text.toString()

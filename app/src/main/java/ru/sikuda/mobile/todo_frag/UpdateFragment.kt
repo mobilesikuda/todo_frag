@@ -2,6 +2,7 @@ package ru.sikuda.mobile.todo_frag
 
 import android.Manifest
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import ru.sikuda.mobile.todo_frag.model.MainModel
 import ru.sikuda.mobile.todo_frag.model.Note
 import java.io.File
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -51,20 +53,33 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dateInput.setText(note.date)
-        binding.contextInput.setText(note.content)
-        binding.detailInput.setText(note.details)
-        if (note.fileimage.isNotBlank()) {
-            Glide.with(this)
-                .load(note.fileimage)
-                .into(binding.imageView)
+        if(savedInstanceState!=null){
+            val savedState = savedInstanceState.getBundle(tmpFileName)
+            if(savedState != null) {
+                Glide.with(this)
+                    .load(savedState.getCharSequence(tmpFileName))
+                    .into(binding.imageView)
+            }
         }
-        else binding.imageView.setImageResource(R.drawable.ic_photo)
+        else {
+            binding.dateInput.setText(note.date)
+            binding.contextInput.setText(note.content)
+            binding.detailInput.setText(note.details)
+            if (note.fileimage.isNotBlank()) {
+                Glide.with(this)
+                    .load(note.fileimage)
+                    .into(binding.imageView)
+            } else binding.imageView.setImageResource(R.drawable.ic_photo)
+        }
 
-        var date = LocalDate.parse(note.date)
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        val date = LocalDateTime.parse(note.date, formatter)
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-            LocalDate.of(year,monthOfYear+1, dayOfMonth).also { date = it }
+            date.withYear(year).withMonth(monthOfYear+1).withDayOfMonth(dayOfMonth)
+            binding.dateInput.setText(date.format(formatter))
+        }
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hh, min ->
+            date.withHour(hh).withMinute(min)
             binding.dateInput.setText(date.format(formatter))
         }
 
@@ -82,6 +97,14 @@ class UpdateFragment : Fragment() {
                 date.year, //cal.get(Calendar.YEAR),
                 date.monthValue-1, //cal.get(Calendar.MONTH),
                 date.dayOfMonth //cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.timeButton.setOnClickListener {
+            TimePickerDialog( this.requireContext(), timeSetListener,
+                date.hour,
+                date.minute, //cal.get(Calendar.MONTH),
+                true
             ).show()
         }
 
@@ -108,6 +131,17 @@ class UpdateFragment : Fragment() {
             model.deleteNote(index, note.id)
             findNavController().popBackStack()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle)  {
+        super.onSaveInstanceState(outState);
+        outState.putBundle( tmpFileName, saveState())
+    }
+
+    private fun saveState(): Bundle { /* called either from onDestroyView() or onSaveInstanceState() */
+        val state = Bundle()
+        state.putCharSequence(tmpFileName, tmpFile?.absolutePath)
+        return state
     }
 
     //take photo
@@ -152,6 +186,11 @@ class UpdateFragment : Fragment() {
             deleteOnExit()
         }
         return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
+    }
+
+    companion object {
+        const val tmpFileName = "tmpFileName"
+        const val latestUriName = "latestUriName"
     }
 
 }
