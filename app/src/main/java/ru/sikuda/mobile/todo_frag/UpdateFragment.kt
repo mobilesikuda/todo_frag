@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -30,7 +29,6 @@ class UpdateFragment : Fragment() {
     private var index: Int = 0
 
     private var latestUri: Uri? = null
-    private var tmpFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,28 +50,29 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(savedInstanceState!=null){
-            val savedState = savedInstanceState.getBundle(tmpFileName)
-            if(savedState != null) {
-                val strTmpFile = savedState.getCharSequence(tmpFileName).toString()
-                tmpFile = File(strTmpFile )
+ //       if(savedInstanceState!=null){
+ //           val savedState = savedInstanceState.getBundle(tmpFileName)
+ //           if(savedState != null) {
+ //               val strTmpFile = savedState.getCharSequence(tmpFileName).toString()
+        if(NotesApp.tmpFile != null){
+                //NotesApp.tmpFile = File(strTmpFile )
                 Glide.with(this)
-                    .load(tmpFile?.absolutePath)
+                    .load(NotesApp.tmpFile?.absolutePath)
                     .into(binding.imageView)
             }
             else binding.imageView.setImageResource(R.drawable.ic_photo)
-        }
-        else {
+//        }
+//        else {
             binding.dateInput.setText(note.date)
             binding.contextInput.setText(note.content)
             binding.detailInput.setText(note.details)
             if (note.fileimage.isNotBlank()) {
-                tmpFile = File(note.fileimage)
+                NotesApp.tmpFile = File(note.fileimage)
                 Glide.with(this)
                     .load(note.fileimage)
                     .into(binding.imageView)
             } else binding.imageView.setImageResource(R.drawable.ic_photo)
-        }
+//        }
 
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         var date = LocalDateTime.parse(note.date, formatter)
@@ -118,13 +117,13 @@ class UpdateFragment : Fragment() {
             val detail = binding.detailInput.text.toString()
 
             var imagefilepath = note.fileimage
-            if( tmpFile != null ){
+            if( NotesApp.tmpFile != null ){
 
                 val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
                 val imagefile = File(filedir,"${UUID.randomUUID()}.jpg")
-                if( tmpFile?.copyTo(imagefile) == imagefile ) {
+                if( NotesApp.tmpFile?.copyTo(imagefile) == imagefile ) {
                     imagefilepath = imagefile.absolutePath
-                    tmpFile?.delete()
+                    NotesApp.deleteTmpFile()
                 }
             }
             model.updateNote(index, note.id.toString(), dating, content, detail, imagefilepath)
@@ -137,22 +136,22 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle)  {
-        super.onSaveInstanceState(outState);
-        outState.putBundle( tmpFileName, saveState())
-    }
+//    override fun onSaveInstanceState(outState: Bundle)  {
+//        super.onSaveInstanceState(outState);
+//        outState.putBundle( tmpFileName, saveState())
+//    }
 
-    private fun saveState(): Bundle { /* called either from onDestroyView() or onSaveInstanceState() */
-        val state = Bundle()
-        state.putCharSequence(tmpFileName, tmpFile?.absolutePath)
-        return state
-    }
+//    private fun saveState(): Bundle { /* called either from onDestroyView() or onSaveInstanceState() */
+//        val state = Bundle()
+//        state.putCharSequence(tmpFileName, tmpFile?.absolutePath)
+//        return state
+//    }
 
     //take photo
     private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         when {
             granted -> {
-                getTmpFileUri().let { uri ->
+                NotesApp.getTmpFileUri().let { uri ->
                     latestUri = uri
                     takeImageResult.launch(latestUri)
                 }
@@ -174,7 +173,7 @@ class UpdateFragment : Fragment() {
             }
         } else {
             // something was wrong
-            NotesApp.showToast(R.string.something_wrong)
+ //           NotesApp.showToast(R.string.something_wrong)
         }
     }
 
@@ -183,18 +182,6 @@ class UpdateFragment : Fragment() {
         NotesApp.showToast(R.string.denied_toast)
     }
 
-    private fun getTmpFileUri(): Uri {
 
-        tmpFile?.delete()
-        tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
-            createNewFile()
-            deleteOnExit()
-        }
-        return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
-    }
-
-    companion object {
-        const val tmpFileName = "tmpFileName"
-    }
 
 }

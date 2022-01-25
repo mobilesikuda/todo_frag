@@ -15,11 +15,29 @@ class NotesApp: Application() {
     }
 
     companion object {
+        const val tmpFileName = "tmpFileName"
+        var tmpFile: File? = null
+
         lateinit var appContext: Context
             private set
 
         fun showToast(textId: Int) {
             Toast.makeText( appContext, textId, Toast.LENGTH_SHORT).show()
+        }
+
+        fun deleteTmpFile(){
+            tmpFile?.delete()
+            tmpFile = null;
+        }
+
+        fun getTmpFileUri(): Uri {
+
+            tmpFile?.delete()
+            tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
+                createNewFile()
+                deleteOnExit()
+            }
+            return FileProvider.getUriForFile(appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
         }
     }
 

@@ -23,7 +23,6 @@ class AddFragment : Fragment() {
 
     private var _binding: FragmentAddBinding? = null
     private var latestUri: Uri? = null
-    private var tmpFile: File? = null
     private val model: MainModel by activityViewModels()
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -49,12 +48,13 @@ class AddFragment : Fragment() {
             val content = binding.contextInput.text.toString()
             val detail = binding.detailInput.text.toString()
             var imagefilepath = "";
-            if( tmpFile != null ){
+            if( NotesApp.tmpFile != null ){
 
                 val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
                 val imagefile = File(filedir,"${UUID.randomUUID()}.jpg")
-                if( tmpFile?.copyTo(imagefile) == imagefile ) {
+                if( NotesApp.tmpFile?.copyTo(imagefile) == imagefile ) {
                     imagefilepath = imagefile.absolutePath
+                    NotesApp.deleteTmpFile()
                 }
             }
             model.insertNote(date, content, detail, imagefilepath)
@@ -81,7 +81,7 @@ class AddFragment : Fragment() {
         when {
             granted -> {
                 lifecycleScope.launchWhenStarted {
-                    getTmpFileUri().let { uri ->
+                    NotesApp.getTmpFileUri().let { uri ->
                         latestUri = uri
                         takeImageResult.launch(latestUri)
                     }
@@ -104,7 +104,7 @@ class AddFragment : Fragment() {
             }
         } else {
             // something was wrong
-            NotesApp.showToast(R.string.something_wrong)
+ //           NotesApp.showToast(R.string.something_wrong)
         }
     }
 
@@ -113,13 +113,4 @@ class AddFragment : Fragment() {
         NotesApp.showToast(R.string.denied_toast)
     }
 
-    private fun getTmpFileUri(): Uri {
-
-        tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
-            createNewFile()
-            deleteOnExit()
-        }
-
-        return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
-    }
 }

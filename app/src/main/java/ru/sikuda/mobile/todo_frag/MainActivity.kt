@@ -1,7 +1,5 @@
 package ru.sikuda.mobile.todo_frag
 
-import android.Manifest
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,17 +8,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.FileProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import ru.sikuda.mobile.todo_frag.databinding.ActivityMainBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
-import java.io.File
-
 
 class MainActivity : AppCompatActivity() {
 
