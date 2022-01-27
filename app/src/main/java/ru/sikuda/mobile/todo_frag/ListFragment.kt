@@ -10,9 +10,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,16 +18,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.sikuda.mobile.todo_frag.databinding.FragmentListBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
-import ru.sikuda.mobile.todo_frag.model.Note
-import ru.sikuda.mobile.todo_frag.model.NoteDatabaseHelper
-import java.time.LocalDateTime
-import java.util.ArrayList
 
 class ListFragment : Fragment() {
 
     private lateinit var binding: FragmentListBinding
-    // This property is only valid between onCreateView and onDestroyView.
-    //private val binding get() = _binding!!
     private val model: MainModel by activityViewModels()
 
     override fun onCreateView(
@@ -37,10 +29,10 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        model.list.observe(viewLifecycleOwner, {
+        model.list.observe(viewLifecycleOwner) {
             // Update the UI
             showNoData()
-        })
+        }
 
         binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
@@ -68,11 +60,6 @@ class ListFragment : Fragment() {
             binding.noData.visibility = View.GONE
         }
     }
-
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
 }
 
 class CustomAdapter(
@@ -91,11 +78,9 @@ class CustomAdapter(
         val note = model.getNote(position)
 
         holder.id = note.id
-        holder.noteid.text = (position+1).toString() //note.id.toString()
+        holder.pos.text = (position+1).toString()
         holder.note_date.text = note.date
         holder.note_content.text = note.content
-        holder.fileimage = note.fileimage
-        holder.details   = note.details
         if (note.fileimage.isNotBlank()) {
             Glide.with(NotesApp.appContext)
                 .load(note.fileimage)
@@ -104,21 +89,18 @@ class CustomAdapter(
         }
 
         //Animation RecycleView
-//        holder.mainLayout.animation = AnimationUtils.loadAnimation(
-//            context, R.anim.translate_anim
-//        )
+        holder.mainLayout.animation = AnimationUtils.loadAnimation(
+            context, R.anim.translate_anim
+        )
 
         //Recyclerview onClickListener
         holder.mainLayout.setOnClickListener {
 
-            //val id = holder.noteid.text.toString().toLong()
-            val date = holder.note_date.text.toString()
-            val content = holder.note_content.text.toString()
-            //val details = holder.note_details.text.toString()
+            //val date = holder.note_date.text.toString()
+            //val content = holder.note_content.text.toString()
 
-            val bundle = bundleOf("index" to holder.adapterPosition, "id" to holder.id, "date_txt" to date, "content" to content,
-                "details" to holder.details, "fileimage" to holder.fileimage)
-            it.findNavController().navigate(R.id.action_ListFragment_to_UpdateFragment, bundle)
+            model.index = holder.adapterPosition
+            it.findNavController().navigate(R.id.action_ListFragment_to_UpdateFragment)
 
         }
     }
@@ -131,10 +113,8 @@ class CustomAdapter(
         RecyclerView.ViewHolder(itemView) {
 
         var id: Long = 0
-        var fileimage = "";
-        var details = "";
 
-        var noteid: TextView = itemView.findViewById(R.id.note_id)
+        var pos: TextView = itemView.findViewById(R.id.pos)
         var note_date: TextView = itemView.findViewById(R.id.note_date)
         var note_content: TextView = itemView.findViewById(R.id.note_content)
         var note_imagefile: ImageView = itemView.findViewById(R.id.imageView)

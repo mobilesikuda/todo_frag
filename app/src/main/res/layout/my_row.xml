@@ -19,7 +19,7 @@
             android:layout_margin="12dp">
 
             <TextView
-                android:id="@+id/note_id"
+                android:id="@+id/pos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="date"
-                app:layout_constraintStart_toEndOf="@+id/note_id"
-                app:layout_constraintTop_toTopOf="@+id/note_id" />
+                app:layout_constraintStart_toEndOf="@+id/pos"
+                app:layout_constraintTop_toTopOf="@+id/pos" />
 
             <TextView
                 android:id="@+id/note_content"

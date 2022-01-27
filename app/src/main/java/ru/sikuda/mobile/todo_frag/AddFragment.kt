@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,18 +20,15 @@ import java.util.*
 
 class AddFragment : Fragment() {
 
-    private var _binding: FragmentAddBinding? = null
+    private lateinit var binding: FragmentAddBinding
     private var latestUri: Uri? = null
     private val model: MainModel by activityViewModels()
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddBinding.inflate(inflater, container, false)
+        binding = FragmentAddBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,17 +43,16 @@ class AddFragment : Fragment() {
             val date = sdf.format(cal.time)
             val content = binding.contextInput.text.toString()
             val detail = binding.detailInput.text.toString()
-            var imagefilepath = "";
-            if( NotesApp.tmpFile != null ){
-
+            var image = ""
+            if( model.tmpFile != null ){
                 val filedir = NotesApp.appContext.getExternalFilesDir(null) //getDataDirectory()
                 val imagefile = File(filedir,"${UUID.randomUUID()}.jpg")
-                if( NotesApp.tmpFile?.copyTo(imagefile) == imagefile ) {
-                    imagefilepath = imagefile.absolutePath
-                    NotesApp.deleteTmpFile()
+                if( model.tmpFile?.copyTo(imagefile) == imagefile ) {
+                    image = imagefile.absolutePath
+                    model.deleteTmpFile()
                 }
             }
-            model.insertNote(date, content, detail, imagefilepath)
+            model.insertNote(date, content, detail, image)
             findNavController().popBackStack();
         }
 
@@ -71,17 +66,12 @@ class AddFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     //take photo
     private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         when {
             granted -> {
                 lifecycleScope.launchWhenStarted {
-                    NotesApp.getTmpFileUri().let { uri ->
+                    model.getTmpFileUri().let { uri ->
                         latestUri = uri
                         takeImageResult.launch(latestUri)
                     }

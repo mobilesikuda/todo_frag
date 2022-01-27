@@ -1,11 +1,15 @@
 package ru.sikuda.mobile.todo_frag.model
 
+import android.net.Uri
+import androidx.core.content.FileProvider
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.sikuda.mobile.todo_frag.BuildConfig
 import ru.sikuda.mobile.todo_frag.NotesApp
+import java.io.File
 
 
 class MainModel() : ViewModel() {
@@ -13,6 +17,11 @@ class MainModel() : ViewModel() {
     var _list: MutableLiveData<ArrayList<Note>> = MutableLiveData<ArrayList<Note>>()
     val list: LiveData<ArrayList<Note>>
         get() = _list
+
+    var tmpFile: File? = null
+    var index: Int = -1
+    //ateinit var note: Note
+
     private val myDB = NoteDatabaseHelper(NotesApp.appContext)
 
     init {
@@ -74,6 +83,32 @@ class MainModel() : ViewModel() {
         viewModelScope.launch {
             myDB.deleteAllData()
         }
+    }
+
+//    fun setNote(pos: Int, id: Long){
+//        index = pos
+//        val note2 = getNote(id.toInt())
+//        note.copy(
+//            id = note2.id,
+//            date = note2.date,
+//            content = note2.content,
+//            details = note2.details,
+//            fileimage = note2.fileimage
+//        )
+//    }
+
+    fun deleteTmpFile(){
+        tmpFile?.delete()
+        tmpFile = null;
+    }
+
+    fun getTmpFileUri(): Uri {
+        tmpFile?.delete()
+        tmpFile = File.createTempFile("tmp_image_file", ".png").apply {
+            createNewFile()
+            deleteOnExit()
+        }
+        return FileProvider.getUriForFile(NotesApp.appContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile!!)
     }
 
 }

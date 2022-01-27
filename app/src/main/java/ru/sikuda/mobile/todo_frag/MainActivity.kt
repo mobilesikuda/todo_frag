@@ -1,5 +1,6 @@
 package ru.sikuda.mobile.todo_frag
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,9 +11,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.navigation.fragment.NavHostFragment
 import ru.sikuda.mobile.todo_frag.databinding.ActivityMainBinding
 import ru.sikuda.mobile.todo_frag.model.MainModel
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -76,5 +79,7 @@ class MainActivity : AppCompatActivity() {
         ) { _, _ -> }
         builder.create().show()
     }
+
+
 
 }
